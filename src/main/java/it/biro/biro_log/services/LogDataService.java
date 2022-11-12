@@ -22,12 +22,12 @@ public class LogDataService {
         return logDataRepository.findByOrigin(Origin);
     }
 
-    public Collection<LogData> findByMessageContaining(String message) {
-        return logDataRepository.findByMessageContaining(message);
-    }
-
     public Collection<LogData> findByDateBetween(Date start, Date end) {
         return logDataRepository.findByDateBetween(start, end);
+    }
+
+    public Collection<LogData> findByOriginAndDateBetween(String origin, Date start, Date end) {
+        return logDataRepository.findByOriginAndDateBetween(origin, start, end);
     }
 
 }

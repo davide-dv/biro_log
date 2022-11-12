@@ -12,7 +12,7 @@ public interface LogDataRepository extends JpaRepository<LogData, Long> {
 
     Collection<LogData> findByOrigin(String origin);
 
-    Collection<LogData> findByMessageContaining(String message);
-
     Collection<LogData> findByDateBetween(Date start, Date end);
+
+    Collection<LogData> findByOriginAndDateBetween(String origin, Date start, Date end);
 }
