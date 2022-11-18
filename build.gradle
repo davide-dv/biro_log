@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'org.springframework.cloud.contract' version '3.1.4'
     id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'maven-publish'
 }
 configurations {
     asciidoctorExt
@@ -39,7 +40,6 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.0.3'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
 }
 
@@ -49,19 +49,24 @@ dependencyManagement {
     }
 }
 
-//
-//publishing {
-//    publications {
-//        mavenJava(MavenPublication) {
-//            from components.java
-//
-//            artifact sourceJar {
-//                classifier "sources"
-//            }
-//            artifact verifierStubsJar
-//        }
-//    }
-//}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact bootJar
+
+            artifact verifierStubsJar
+
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionOf("runtimeClasspath")
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+}
 
 contracts {
     testMode = "EXPLICIT"
@@ -99,12 +104,6 @@ ext {
 
 test {
     outputs.dir snippetsDir
-}
-
-asciidoctor {
-    inputs.dir snippetsDir
-    configurations 'asciidoctorExt'
-    dependsOn test
 }
 
 bootJar {
