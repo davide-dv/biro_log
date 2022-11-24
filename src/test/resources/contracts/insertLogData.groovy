@@ -13,8 +13,9 @@ Contract.make {
             header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
         }
         body([
-                message: "message",
-                origin: "service-origin"
+                date: 0,
+                origin: "service-origin",
+                message: "json_formatted_data"
         ])
     }
     response {
@@ -23,8 +24,8 @@ Contract.make {
             header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
         }
         body([
-                message: "message",
-                origin: "service-origin"
+                origin: "service-origin",
+                message: "json_formatted_data"
         ])
     }
 }

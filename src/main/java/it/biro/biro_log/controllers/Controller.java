@@ -29,9 +29,10 @@ public class Controller {
     @PostMapping("/")
     public Mono<LogData> logString(@RequestBody LogData logData) {
         return Mono.just(logDataService.save(LogData.builder()
-                .message(logData.getMessage())
-                .origin(logData.getOrigin())
-                .build()));
+                    .message(logData.getMessage())
+                    .origin(logData.getOrigin())
+                    .date(logData.getDate())
+                    .build()));
     }
 
     @GetMapping("/origin/{origin}")
@@ -39,11 +40,20 @@ public class Controller {
         return Mono.just(logDataService.findByOrigin(origin)).flatMapMany(Flux::fromIterable);
     }
 
-    @GetMapping("/{startDate}/{endDate}")
+    @GetMapping("/origin/{origin}/{startDate}/{endDate}")
+    public Flux<LogData> getByOriginAndDateBetween(@PathVariable String origin, @PathVariable String startDate, @PathVariable String endDate) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date start = formatter.parse(startDate);
+        Date end = formatter.parse(endDate);
+        return Mono.just(logDataService.findByOriginAndDateBetween(origin, start, end)).flatMapMany(Flux::fromIterable);
+    }
+
+    @GetMapping("/date/{startDate}/{endDate}")
     public Flux<LogData> getByDateRange(@PathVariable String startDate, @PathVariable String endDate) throws ParseException {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date start = formatter.parse(startDate);
         Date end = formatter.parse(endDate);
+        System.out.println();
         return Mono.just(logDataService.findByDateBetween(start, end)).flatMapMany(Flux::fromIterable);
     }
 

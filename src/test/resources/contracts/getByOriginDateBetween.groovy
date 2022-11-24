@@ -6,7 +6,7 @@ import org.springframework.http.MediaType
 Contract.make {
     description ""
     request {
-        url "/api/log/origin/service-origin"
+        url "/api/log/origin/service-origin/1970-01-01T00:00:00/1970-01-01T00:00:10"
         method GET()
     }
     response {
@@ -15,9 +15,9 @@ Contract.make {
             header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
         }
         body([[
-                  date: "1970-01-01T00:00:00.000+00:00",
-                  message: "json_formatted_data",
-                  origin: "service-origin"
+                date: "1970-01-01T00:00:00.000+00:00",
+                message: "json_formatted_data",
+                origin: "service-origin"
         ]])
     }
 }
